@@ -48,7 +48,12 @@ No arquivo `appsettings.json`, verifique se a string de conexão está assim:
 ```
 ###  Executar a API
 
-Abra o terminal na pasta onde está o arquivo FolhaEsigAPI.sln.
+1. Abra o terminal na pasta do projeto (onde está o arquivo `FolhaEsigAPI.sln`).
+
+2. Acesse a subpasta onde está o arquivo `.csproj`:
+   ```bash
+   cd folhaEsigApi
+   ```
 
 Execute o comando:
 
