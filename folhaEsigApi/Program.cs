@@ -3,24 +3,28 @@ using FolhaEsigAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 
-
-builder.Services.AddOpenApi();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(); 
 
 builder.Services.AddDbContext<FolhaEsigContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 33)) 
+        new MySqlServerVersion(new Version(8, 0, 33))
     )
 );
 
 var app = builder.Build();
 
+
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+
+    app.UseSwagger(); 
+    app.UseSwaggerUI();
+
+    
 }
 
 app.UseHttpsRedirection();

@@ -21,7 +21,7 @@ namespace FolhaEsigAPI.Controllers
                 ?? throw new Exception("Connection string 'DefaultConnection' não encontrada no appsettings.json");
         }
 
-        // GET: api/PessoaSalario/listar?ordem=nome
+    
         [HttpGet("listar")]
         public async Task<IActionResult> ListarPessoaSalario([FromQuery] string ordem = "nome")
         {
@@ -40,7 +40,7 @@ namespace FolhaEsigAPI.Controllers
                             var dt = new DataTable();
                             dt.Load(reader);
 
-                            // Converte o DataTable em lista para JSON
+                       
                             var lista = new List<Dictionary<string, object>>();
                             foreach (DataRow row in dt.Rows)
                             {
@@ -61,7 +61,6 @@ namespace FolhaEsigAPI.Controllers
             }
         }
 
-        // POST: api/PessoaSalario/calcular
         [HttpPost("calcular")]
         public async Task<IActionResult> CalcularSalarios()
         {

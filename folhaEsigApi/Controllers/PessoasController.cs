@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FolhaEsigAPI.Data;
 using FolhaEsigAPI.Models;
+using folhaEsigApi.Models;
 
 namespace FolhaEsigAPI.Controllers
 {
@@ -18,25 +19,23 @@ namespace FolhaEsigAPI.Controllers
 
         // GET: api/Pessoas
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PessoaSalario>>> GetPessoas()
+        public async Task<ActionResult<IEnumerable<PessoaView>>> GetPessoas()
         {
-            // Retorna a view vw_ListaPessoas
             try
             {
-               
-                var cargos = await _context.Cargos
-                    .FromSqlRaw("SELECT * FROM vw_ListarPessoas")
+                var pessoas = await _context.PessoasView
+                    .FromSqlRaw("SELECT * FROM vw_listarpessoas")
                     .AsNoTracking()
                     .ToListAsync();
 
-                return Ok(cargos);
+                return Ok(pessoas);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao listar cargos: {ex.Message}");
+                return StatusCode(500, $"Erro ao listar pessoas: {ex.Message}");
             }
         }
-        // POST: api/Pessoa/inserir
+    
         [HttpPost("inserir")]
         public async Task<IActionResult> InserirPessoa([FromBody] Pessoa pessoa)
         {
@@ -74,11 +73,11 @@ namespace FolhaEsigAPI.Controllers
             }
         }
 
-        // DELETE: api/Pessoas/Deletar/{id}
+   
         [HttpDelete("/Deletar/{id}")]
         public async Task<IActionResult> RemoverPessoa(int id)
         {
-            // Chama a procedure "RemoverPessoa"
+         
             var result = await _context.Database.ExecuteSqlRawAsync(
                 "CALL RemoverPessoa({0})", id
             );
@@ -91,11 +90,10 @@ namespace FolhaEsigAPI.Controllers
             return Ok(new { message = "Pessoa removida com sucesso." });
         }
 
-        // POST: api/Pessoas/AtualizarPessoaSalario
         [HttpPost("AtualizarPessoaSalario")]
         public async Task<IActionResult> RecalcularSalarios()
         {
-            // Chama a procedure "AtualizarPessoaSalario"
+           
             await _context.Database.ExecuteSqlRawAsync("CALL AtualizarPessoaSalario()");
 
             return Ok(new { message = "Salários recalculados com sucesso." });
